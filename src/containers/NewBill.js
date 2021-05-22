@@ -16,9 +16,21 @@ export default class NewBill {
     new Logout({ document, localStorage, onNavigate })
   }
   handleChangeFile = e => {
-    const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
+    let file = this.document.querySelector(`input[data-testid="file"]`)
+    file = file.files[0]
     const filePath = e.target.value.split(/\\/g)
     const fileName = filePath[filePath.length-1]
+    const fileExtension = fileName.split('.').pop()
+    const extension = ['jpg', 'jpeg', 'png'];
+    let extensionValid = true;
+    if(extension.indexOf(fileExtension.toLowerCase()) === -1) {
+      this.document.querySelector('#btn-send-bill').style.display = 'none';
+      alert('Le justificatif doit être au format jpg, jpeg ou png !');
+      extensionValid = false;
+    } else {
+      this.document.querySelector('#btn-send-bill').style.display = 'block';
+      extensionValid = true;
+    }
     this.firestore
       .storage
       .ref(`justificatifs/${fileName}`)
@@ -30,6 +42,7 @@ export default class NewBill {
       })
   }
   handleSubmit = e => {
+    if (extensionValid === false) return;
     e.preventDefault()
     console.log('e.target.querySelector(`input[data-testid="datepicker"]`).value', e.target.querySelector(`input[data-testid="datepicker"]`).value)
     const email = JSON.parse(localStorage.getItem("user")).email
