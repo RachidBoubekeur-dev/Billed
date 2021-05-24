@@ -62,5 +62,24 @@ export default {
         "fileUrl": "https://firebasestorage.googleapis.com/v0/b/billable-677b6.a…f-1.jpg?alt=media&token=4df6ed2c-12c8-42a2-b013-346c1346f732"
       }]
     })
+  },
+  post: (request) => {
+    return Promise.resolve({
+      data: [{
+        id: request.id,
+        status: request.status,
+        pct: request.pct,
+        amount: request.amount,
+        email: request.email,
+        name: request.name,
+        vat: request.vat,
+        fileName: request.fileName,
+        date: request.date,
+        commentAdmin: request.commentAdmin,
+        commentary: request.commentary,
+        type: request.type,
+        fileUrl: request.fileUrl
+      }]
+    });
   }
-}
+};

@@ -15,10 +15,10 @@ export default class {
     })
     new Logout({ document, localStorage, onNavigate })
   }
-
+  
   handleClickNewBill = e => {
     this.onNavigate(ROUTES_PATH['NewBill'])
-  }
+  };
 
   handleClickIconEye = (icon) => {
     const billUrl = icon.getAttribute("data-bill-url")
