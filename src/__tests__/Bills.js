@@ -8,6 +8,21 @@ import BillsUI from '../views/BillsUI.js';
 import Bills from '../containers/Bills.js';
 import { bills } from '../fixtures/bills.js';
 
+const initPage = (bills = false) => {
+  if (!bills) bills = [];
+  Object.defineProperty(window, 'localStorage', { value: localStorageMock });
+  window.localStorage.setItem('user', JSON.stringify({ type: 'Employee' }));
+  document.body.innerHTML = BillsUI({ data: bills });
+  const onNavigate = (pathname) => { document.body.innerHTML = ROUTES({ pathname })};
+  const allBills = new Bills({
+    document,
+    onNavigate,
+    firestore: null,
+    localStorage: window.localStorage
+  });
+  return allBills;
+};
+
 describe('Given I am connected as an employee', () => {
   describe('When I am on Bills Page', () => {
     it('Then bill icon in vertical layout should be highlighted', () => {
@@ -35,33 +50,20 @@ describe('Given I am connected as an employee', () => {
       expect(bills.data.length).toBe(4);
     });
     it('Then fetches bills from an API and fails with 404 message error', async () => {
-      firebase.get.mockImplementationOnce(() =>
-        Promise.reject(new Error('Erreur 404'))
-      );
+      firebase.get.mockImplementationOnce(() => Promise.reject(new Error('Erreur 404')));
       document.body.innerHTML = BillsUI({ error: 'Erreur 404' });
       const message = await screen.getByText(/Erreur 404/);
       expect(message).toBeTruthy();
     });
     it('Then fetches messages from an API and fails with 500 message error', async () => {
-      firebase.get.mockImplementationOnce(() =>
-        Promise.reject(new Error('Erreur 500'))
-      );
+      firebase.get.mockImplementationOnce(() => Promise.reject(new Error('Erreur 500')));
       document.body.innerHTML = BillsUI({ error: 'Erreur 500' });
       const message = await screen.getByText(/Erreur 500/);
       expect(message).toBeTruthy();
     });
     describe('When I click to button New expense report', () => {
       it('Then the title change', () => {
-        Object.defineProperty(window, 'localStorage', { value: localStorageMock });
-        window.localStorage.setItem('user', JSON.stringify({ type: 'Employee' }));
-        document.body.innerHTML = BillsUI({ data: [] });
-        const onNavigate = (pathname) => { document.body.innerHTML = ROUTES({ pathname })};
-        const allBills = new Bills({
-          document,
-          onNavigate,
-          firestore: null,
-          localStorage: window.localStorage
-        });
+        const allBills = initPage();
         const handleClickNewBill = jest.fn(allBills.handleClickNewBill);
         const btnNewBill = screen.getByTestId('btn-new-bill');
         btnNewBill.addEventListener('click', handleClickNewBill);
@@ -73,16 +75,7 @@ describe('Given I am connected as an employee', () => {
     });
     describe('When I click on the icon eye', () => {
       it('Then I modale File should open', () => {
-        Object.defineProperty(window, 'localStorage', { value: localStorageMock });
-        window.localStorage.setItem('user', JSON.stringify({ type: 'Employee' }));
-        document.body.innerHTML = BillsUI({ data: bills });
-        const onNavigate = (pathname) => { document.body.innerHTML = ROUTES({ pathname })};
-        const allBills = new Bills({
-          document,
-          onNavigate,
-          firestore: null,
-          localStorage: window.localStorage
-        });
+        const allBills = initPage(bills);
         $.fn.modal = jest.fn();
         const iconEye = screen.getAllByTestId('icon-eye')[0];
         const handleClickIconEye = jest.fn(allBills.handleClickIconEye(iconEye));
@@ -95,16 +88,7 @@ describe('Given I am connected as an employee', () => {
     });
     describe('When I click on the close modal', () => {
       it('Then I modale File should close', () => {
-        Object.defineProperty(window, 'localStorage', { value: localStorageMock });
-        window.localStorage.setItem('user', JSON.stringify({ type: 'Employee' }));
-        document.body.innerHTML = BillsUI({ data: bills });
-        const onNavigate = (pathname) => { document.body.innerHTML = ROUTES({ pathname })};
-        const allBills = new Bills({
-          document,
-          onNavigate,
-          firestore: null,
-          localStorage: window.localStorage
-        });
+        const allBills = initPage(bills);
         $.fn.modal = jest.fn();
         const iconEye = screen.getAllByTestId('icon-eye')[0];
         const handleClickIconEye = jest.fn(allBills.handleClickIconEye(iconEye));

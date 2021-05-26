@@ -6,20 +6,25 @@ import NewBillUI from '../views/NewBillUI.js';
 import NewBill from '../containers/NewBill.js';
 import BillsUI from '../views/BillsUI.js';
 
+const initPage = () => {
+  Object.defineProperty(window, 'localStorage', { value: localStorageMock });
+  window.localStorage.setItem('user', JSON.stringify({ type: 'Employee' }));
+  const onNavigate = (pathname) => { document.body.innerHTML = ROUTES({ pathname }) };
+  document.body.innerHTML = NewBillUI(); 
+  const newBill = new NewBill({
+    document,
+    onNavigate,
+    firestore: false,
+    localStorage: window.localStorage,
+  });
+  return newBill;
+};
+
 describe('Given I am connected as an employee', () => {
   describe('Given I am on NewBill Page', () => {
     describe('When I add a file in inputFile', () => {
       it('Then this new file should have been changed in the input file', () => {
-        Object.defineProperty(window, 'localStorage', { value: localStorageMock });
-        window.localStorage.setItem('user', JSON.stringify({ type: 'Employee' }));
-        const onNavigate = (pathname) => { document.body.innerHTML = ROUTES({ pathname }) };
-        document.body.innerHTML = NewBillUI(); 
-        const newBill = new NewBill({
-          document,
-          onNavigate,
-          firestore: false,
-          localStorage: window.localStorage,
-        });
+        const newBill = initPage();
         const handleChangeFile = jest.fn(newBill.handleChangeFile);
         const inputFile = screen.getByTestId('file');
         inputFile.addEventListener('change', handleChangeFile);
@@ -28,16 +33,7 @@ describe('Given I am connected as an employee', () => {
         expect(inputFile.files[0].name).toBe('image.jpg');
       });
       it('Then the bill shouldn\'t be created and I stay on the NewBill page', () => {
-        Object.defineProperty(window, 'localStorage', { value: localStorageMock });
-        window.localStorage.setItem('user',JSON.stringify({ type: 'Employee' }));
-        const onNavigate = (pathname) => { document.body.innerHTML = ROUTES({ pathname }) };
-        document.body.innerHTML = NewBillUI();
-        const newBill = new NewBill({
-          document,
-          onNavigate,
-          firestore: false,
-          localStorage: window.localStorage,
-        });
+        const newBill = initPage();
         const handleChangeFile = jest.fn(newBill.handleChangeFile);
         const inputFile = screen.getByTestId('file');
         inputFile.addEventListener('change', handleChangeFile);
@@ -48,16 +44,7 @@ describe('Given I am connected as an employee', () => {
       });
     });
     it('Then click to button submit', () => {
-      Object.defineProperty(window, 'localStorage', { value: localStorageMock });
-      window.localStorage.setItem('user',JSON.stringify({ type: 'Employee' }));
-      const onNavigate = (pathname) => { document.body.innerHTML = ROUTES({ pathname }) };
-      document.body.innerHTML = NewBillUI();
-      const newBill = new NewBill({
-        document,
-        onNavigate,
-        firestore: null,
-        localStorage: window.localStorage,
-      });
+      const newBill = initPage();
       const handleSubmit = jest.fn(newBill.handleSubmit);
       const submitBtn = screen.getByTestId('form-new-bill');
       submitBtn.addEventListener('submit', handleSubmit);

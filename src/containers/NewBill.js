@@ -14,15 +14,30 @@ export default class NewBill {
     this.fileName = null
     new Logout({ document, localStorage, onNavigate })
   }
+
   handleChangeFile = e => {
-    const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
+    let file = this.document.querySelector(`input[data-testid="file"]`);
+    file = file.files[0];
     const filePath = e.target.value.split(/\\/g)
     const fileName = filePath[filePath.length-1]
-    const fileExtension = ['jpg', 'jpeg', 'png'];
-    if(fileExtension.indexOf(fileName.split('.').pop().toLowerCase()) === -1) {
-      this.document.querySelector('#btn-send-bill').style.display = 'none';
+    const fileExtension = [
+      'jpg',
+      'jpeg',
+      'png'
+    ];
+    const extension = fileName.split('.').pop().toLowerCase();
+
+    const ValidExtension = fileExtension.indexOf(extension);
+
+    const btnSendBill = this.document.querySelector('#btn-send-bill');
+
+    if(ValidExtension === -1) {
+      btnSendBill.style.display = 'none';
       alert('Le justificatif doit être au format jpg, jpeg ou png !');
-    } else this.document.querySelector('#btn-send-bill').style.display = 'block';
+    } else {
+      btnSendBill.style.display = 'block';
+    }
+
     if(this.firestore) {
       this.firestore
         .storage
