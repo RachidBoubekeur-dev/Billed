@@ -1,50 +1,34 @@
-**Comment lancer l'application en local** :
+# Billed
 
-Clonez le projet :
-```
-$ git clone https://github.com/OpenClassrooms-Student-Center/Billed-app-FR.git
-```
+## 1. General information
 
-Allez au repo cloné :
-```
-$ cd Billed-app-FR
-```
+Billed is project 9 of the OpenClassrooms training course of the front-end developers course.
+The project consists of setting up tests with JavaScript.
 
-Installez les packages npm (décrits dans `package.json`) :
-```
-$ npm install
-```
+## 2. Skills assessed
 
-Installez live-server pour lancer un serveur local :
-```
-$ npm install -g live-server
-```
+✔️ Write unit tests with JavaScript.
 
-Lancez l'application :
-```
-$ live-server
-```
+✔️ Write integration tests with JavaScript.
 
-Puis allez à l'adresse : `http://127.0.0.1:8080/`
+✔️ Debug a web application with the Chrome Debugger.
 
+✔️ Write a manual end-to-end test plan.
 
-**Comment lancer tous les tests en local avec Jest :**
+## 3. Project
 
-```
-$ npm run test
-```
+### 3.1 This project uses:
 
-**Comment lancer un seul test :**
+-   [NodeJS](https://nodejs.org/en/)
+-   [express](https://expressjs.com/fr/)
+-   [jquery](https://jquery.com/)
+-   [path](https://www.npmjs.com/package/path)
+-   [jest](https://jestjs.io/fr/)
 
-Installez jest-cli :
+### 3.2 Launching the project
 
-```
-$npm i -g jest-cli
-$jest src/__tests__/your_test_file.js
-```
+1. To start, you will need to `git clone` the project on your machine via a command in your terminal: `git clone https://github.com/RachidBoubekeur-dev/RachidBoubekeur_DA9_21052021.git`.
 
-**Comment voir la couverture de test :**
+2. Still in your terminal, go to the newly created folder RachidBoubekeur_DA9_21052021.
 
-`http://127.0.0.1:8080/coverage/lcov-report/`
-
-
+3. In this folder, install the packages necessary for the proper functioning of the project via the `npm install` command.
